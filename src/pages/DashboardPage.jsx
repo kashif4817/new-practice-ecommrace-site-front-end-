@@ -76,7 +76,7 @@ const statsData = [
     label: "New Customers",
     value: "462",
     change: "-2.4%",
-    trend: "down" ,
+    trend: "down",
     icon: UserCheck,
     color: "from-blue-400 to-blue-600",
     bgLight: "bg-blue-50",
@@ -86,7 +86,7 @@ const statsData = [
     label: "Conversion Rate",
     value: "3.24%",
     change: "+0.8%",
-    trend: "up" ,
+    trend: "up",
     icon: Target,
     color: "from-purple-400 to-purple-600",
     bgLight: "bg-purple-50",
@@ -135,7 +135,7 @@ const activityFeed = [
   { type: "shipping", message: "Shipment #SP-4521 delivered successfully", time: "3 hrs ago", icon: Truck },
 ];
 
-const statusConfig= {
+const statusConfig = {
   Delivered: { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-500", icon: CheckCircle2 },
   Shipped: { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-500", icon: Truck },
   Processing: { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-500", icon: RefreshCw },
@@ -147,7 +147,7 @@ export default function DashboardPage({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [chartPeriod, setChartPeriod] = useState<"weekly" | "monthly" | "yearly">("monthly");
+  const [chartPeriod, setChartPeriod] = useState("monthly");
   const [activeNav, setActiveNav] = useState("Dashboard");
 
   return (
@@ -432,7 +432,7 @@ export default function DashboardPage({ onLogout }) {
                   <p className="text-sm text-stone-500">Monthly revenue performance</p>
                 </div>
                 <div className="flex items-center bg-stone-100 rounded-xl p-1">
-                  {(["weekly", "monthly", "yearly"]).map((period) => (
+                  {["weekly", "monthly", "yearly"].map((period) => (
                     <button
                       key={period}
                       onClick={() => setChartPeriod(period)}
@@ -685,4 +685,3 @@ export default function DashboardPage({ onLogout }) {
     </div>
   );
 }
-

@@ -16,7 +16,10 @@ import LoginPage from "./pages/LoginPage.jsx";
 import SignUpPage from "./pages/SignupPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import { Route, Router, Routes } from "react-router-dom";
-import NotFound from './pages/NotFound.jsx'
+import NotFound from "./pages/NotFound.jsx";
+import TermsOfService from "./pages/TermsOfService.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   // const [currentPage, setCurrentPage] = useState("login");
@@ -254,21 +257,22 @@ export default function App() {
     //     </div>
     //   </div>
     // </div>
-    <div >
+    <div>
       {/* <Router> */}
       <Routes>
-
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
     </div>
     // <div>
     //   <h1 class="text-3xl font-bold underline">
     //     Hello world!
     //   </h1>
     // </div>
-
   );
 }
