@@ -1,26 +1,67 @@
 import { useState } from "react";
-import { Eye, EyeOff, Mail, Lock, ShoppingBag, ArrowRight, Sparkles, Star, Shield, Zap } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  ShoppingBag,
+  ArrowRight,
+  Sparkles,
+  Star,
+  Shield,
+  Zap,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Field message component
 function FieldMessage({ type, message }) {
   if (!message) return null;
-  const styles = { error: "text-red-500", success: "text-emerald-500", info: "text-amber-500" };
+  const styles = {
+    error: "text-red-500",
+    success: "text-emerald-500",
+    info: "text-amber-500",
+  };
   const icons = {
     error: (
-      <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <svg
+        className="w-3 h-3 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
       </svg>
     ),
     success: (
-      <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <svg
+        className="w-3 h-3 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
+      >
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
       </svg>
     ),
     info: (
-      <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg
+        className="w-3 h-3 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     ),
   };
@@ -62,7 +103,10 @@ export default function LoginPage({ onLoginSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
-  const [fieldMessages, setFieldMessages] = useState({ email: null, password: null });
+  const [fieldMessages, setFieldMessages] = useState({
+    email: null,
+    password: null,
+  });
   const setFieldMsg = (field, type, message) =>
     setFieldMessages((prev) => ({ ...prev, [field]: { type, message } }));
   const clearFieldMsg = (field) =>
@@ -92,30 +136,31 @@ export default function LoginPage({ onLoginSuccess }) {
     e.preventDefault();
     validateEmail();
     validatePassword();
-    if (!email || !password || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (!email || !password || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return;
 
     setIsLoading(true);
     try {
       const res = await fetch("http://localhost:3000/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        credentials: "include",
+        body: JSON.stringify({ email, password, rememberMe }),
       });
 
       const result = await res.json();
-
       if (res.ok) {
-        const storage = rememberMe ? localStorage : sessionStorage;
-        storage.setItem("accessToken", result.data?.accessToken);
         toast.success("Welcome back! 👋");
-        onLoginSuccess?.();
+        // onLoginSuccess?.();
         navigate("/dashboard");
       } else if (res.status === 500 || res.status === 401) {
         setFieldMsg("email", "error", " ");
         setFieldMsg("password", "error", "Invalid email or password.");
         toast.error(result.message || "Invalid credentials.");
       } else {
-        toast.error(result.message || "Something went wrong. Please try again.");
+        toast.error(
+          result.message || "Something went wrong. Please try again.",
+        );
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -127,10 +172,8 @@ export default function LoginPage({ onLoginSuccess }) {
 
   return (
     <div className="h-screen w-screen flex overflow-hidden">
-
       {/* ── LEFT panel — decorative (lg+ only) ── */}
       <div className="hidden lg:flex lg:w-[52%] relative overflow-hidden bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900 flex-shrink-0">
-
         {/* Ambient blobs */}
         <div className="absolute top-[-80px] left-[-80px] w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-[-60px] right-[-60px] w-80 h-80 bg-amber-400/8 rounded-full blur-3xl pointer-events-none" />
@@ -148,30 +191,41 @@ export default function LoginPage({ onLoginSuccess }) {
 
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-between w-full h-full p-14">
-
           {/* Top: logo + tagline */}
           <div>
             <div className="flex items-center gap-3 mb-12">
               <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
-                <ShoppingBag className="w-5 h-5 text-stone-900" strokeWidth={2.5} />
+                <ShoppingBag
+                  className="w-5 h-5 text-stone-900"
+                  strokeWidth={2.5}
+                />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white tracking-widest">LUXE</h1>
-                <p className="text-amber-400/50 text-[8px] tracking-[0.3em] uppercase font-medium">Premium Store</p>
+                <h1 className="text-lg font-bold text-white tracking-widest">
+                  LUXE
+                </h1>
+                <p className="text-amber-400/50 text-[8px] tracking-[0.3em] uppercase font-medium">
+                  Premium Store
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 mb-5">
               <div className="h-px w-8 bg-amber-400/60" />
-              <span className="text-amber-400/80 text-xs tracking-[0.25em] uppercase font-medium">Est. 2019</span>
+              <span className="text-amber-400/80 text-xs tracking-[0.25em] uppercase font-medium">
+                Est. 2019
+              </span>
             </div>
             <h3 className="text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight">
-              Curated luxury,<br />
-              <span className="text-amber-400">delivered</span> to<br />
+              Curated luxury,
+              <br />
+              <span className="text-amber-400">delivered</span> to
+              <br />
               your door.
             </h3>
             <p className="mt-5 text-stone-400 text-base leading-relaxed max-w-sm">
-              Access thousands of exclusive products handpicked by our team of style experts.
+              Access thousands of exclusive products handpicked by our team of
+              style experts.
             </p>
           </div>
 
@@ -196,8 +250,13 @@ export default function LoginPage({ onLoginSuccess }) {
           {/* Bottom: testimonial */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex gap-0.5 mb-3">
-              {Array.from({ length: testimonials[activeTestimonial].rating }).map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              {Array.from({
+                length: testimonials[activeTestimonial].rating,
+              }).map((_, i) => (
+                <Star
+                  key={i}
+                  className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                />
               ))}
             </div>
             <p className="text-stone-300 text-sm leading-relaxed italic">
@@ -205,8 +264,12 @@ export default function LoginPage({ onLoginSuccess }) {
             </p>
             <div className="flex items-center justify-between mt-4">
               <div>
-                <p className="text-white text-sm font-semibold">{testimonials[activeTestimonial].name}</p>
-                <p className="text-amber-400/70 text-xs">{testimonials[activeTestimonial].role}</p>
+                <p className="text-white text-sm font-semibold">
+                  {testimonials[activeTestimonial].name}
+                </p>
+                <p className="text-amber-400/70 text-xs">
+                  {testimonials[activeTestimonial].role}
+                </p>
               </div>
               <div className="flex gap-1.5">
                 {testimonials.map((_, i) => (
@@ -229,15 +292,21 @@ export default function LoginPage({ onLoginSuccess }) {
       {/* ── RIGHT panel — form ── */}
       <div className="flex-1 flex items-center justify-center px-6 lg:px-16 bg-stone-50 overflow-y-auto">
         <div className="w-full max-w-md py-12">
-
           {/* Logo — mobile only (lg panel has its own) */}
           <div className="flex lg:hidden items-center gap-3 mb-10">
             <div className="w-11 h-11 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
-              <ShoppingBag className="w-6 h-6 text-stone-900" strokeWidth={2.5} />
+              <ShoppingBag
+                className="w-6 h-6 text-stone-900"
+                strokeWidth={2.5}
+              />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-stone-800 tracking-widest">LUXE</h1>
-              <p className="text-amber-600/60 text-[9px] tracking-[0.3em] uppercase font-medium">Premium Store</p>
+              <h1 className="text-xl font-bold text-stone-800 tracking-widest">
+                LUXE
+              </h1>
+              <p className="text-amber-600/60 text-[9px] tracking-[0.3em] uppercase font-medium">
+                Premium Store
+              </p>
             </div>
           </div>
 
@@ -253,10 +322,12 @@ export default function LoginPage({ onLoginSuccess }) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-
             {/* Email */}
             <div className="space-y-1.5">
-              <label htmlFor="login-email" className="text-sm font-medium text-stone-700 flex items-center gap-1.5">
+              <label
+                htmlFor="login-email"
+                className="text-sm font-medium text-stone-700 flex items-center gap-1.5"
+              >
                 <Mail className="w-3.5 h-3.5 text-stone-400" />
                 Email Address
               </label>
@@ -265,17 +336,23 @@ export default function LoginPage({ onLoginSuccess }) {
                   fieldMessages.email?.type === "error"
                     ? "border-red-400 shadow-lg shadow-red-50"
                     : focusedField === "email"
-                    ? "border-amber-400 shadow-lg shadow-amber-100"
-                    : "border-stone-200 hover:border-stone-300"
+                      ? "border-amber-400 shadow-lg shadow-amber-100"
+                      : "border-stone-200 hover:border-stone-300"
                 }`}
               >
                 <input
                   id="login-email"
                   type="email"
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); clearFieldMsg("email"); }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    clearFieldMsg("email");
+                  }}
                   onFocus={() => setFocusedField("email")}
-                  onBlur={() => { setFocusedField(null); validateEmail(); }}
+                  onBlur={() => {
+                    setFocusedField(null);
+                    validateEmail();
+                  }}
                   placeholder="you@example.com"
                   className="w-full px-4 py-3.5 bg-transparent text-stone-800 placeholder-stone-300 text-sm outline-none rounded-xl"
                   required
@@ -287,11 +364,17 @@ export default function LoginPage({ onLoginSuccess }) {
             {/* Password */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label htmlFor="login-password" className="text-sm font-medium text-stone-700 flex items-center gap-1.5">
+                <label
+                  htmlFor="login-password"
+                  className="text-sm font-medium text-stone-700 flex items-center gap-1.5"
+                >
                   <Lock className="w-3.5 h-3.5 text-stone-400" />
                   Password
                 </label>
-                <a href="#" className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2">
+                <a
+                  href="#"
+                  className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -300,17 +383,23 @@ export default function LoginPage({ onLoginSuccess }) {
                   fieldMessages.password?.type === "error"
                     ? "border-red-400 shadow-lg shadow-red-50"
                     : focusedField === "password"
-                    ? "border-amber-400 shadow-lg shadow-amber-100"
-                    : "border-stone-200 hover:border-stone-300"
+                      ? "border-amber-400 shadow-lg shadow-amber-100"
+                      : "border-stone-200 hover:border-stone-300"
                 }`}
               >
                 <input
                   id="login-password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value); clearFieldMsg("password"); }}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    clearFieldMsg("password");
+                  }}
                   onFocus={() => setFocusedField("password")}
-                  onBlur={() => { setFocusedField(null); validatePassword(); }}
+                  onBlur={() => {
+                    setFocusedField(null);
+                    validatePassword();
+                  }}
                   placeholder="••••••••••"
                   className="w-full px-4 py-3.5 bg-transparent text-stone-800 placeholder-stone-300 text-sm outline-none rounded-xl pr-12"
                   required
@@ -320,7 +409,11 @@ export default function LoginPage({ onLoginSuccess }) {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors p-1 cursor-pointer"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
               <FieldMessage {...(fieldMessages.password || {})} />
@@ -337,8 +430,18 @@ export default function LoginPage({ onLoginSuccess }) {
                 />
                 <div className="w-5 h-5 rounded-md border-2 border-stone-300 peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-all duration-200 flex items-center justify-center group-hover:border-amber-400">
                   {rememberMe && (
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   )}
                 </div>
@@ -355,9 +458,25 @@ export default function LoginPage({ onLoginSuccess }) {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                   Signing In...
                 </div>
