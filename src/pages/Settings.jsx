@@ -1,18 +1,82 @@
 import { useState } from "react";
-import { Lock, Eye, EyeOff, ShieldCheck, Settings } from "lucide-react";
+import {
+  Lock,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  Settings,
+  ClockFading,
+} from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
   const [current, setCurrent] = useState("");
-  const [newPw, setNewPw] = useState("");
-  const [confirm, setConfirm] = useState("");
   const [showCurrent, setShowCurrent] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [focused, setFocused] = useState(null);
-  
+  const [currentError, setcurrentError] = useState("");
 
-  const handleSubmit = () => {
-    // add your logic here
+  const [newPw, setNewPw] = useState("");
+  const [showNew, setShowNew] = useState(false);
+  const [newPwError, setnewPwError] = useState("");
+
+  const [confirm, setConfirm] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmError, setConfirmError] = useState("");
+
+  const [focused, setFocused] = useState(null);
+
+  const validateForm = () => {
+    setcurrentError("");
+    setnewPwError("");
+    setConfirmError("");
+
+    if (!current) setcurrentError("Required");
+    if (!newPw) setnewPwError("Required");
+    if (!confirm) {
+      setConfirmError("Required");
+      return false;
+    }
+
+    if (newPw.length < 6) {
+      setnewPwError("Password too short");
+      return false;
+    }
+
+    if (newPw !== confirm) {
+      setConfirmError("Passwords do not match");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    const isValid = validateForm();
+    if (!isValid) return;
+    console.log("Form is valid. Continue API call");
+    try {
+      console.log("enter to send api");
+      const res = await fetch("http://localhost:3000/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ currentPassword: current, newPassword: newPw }),
+      });
+
+      const result = await res.json();
+      console.log(res);
+      console.log(result);
+      setcurrentError(result.message);
+      if (res.ok) {
+        setcurrentError("");
+        toast.success("Password updated successfully");
+        setCurrent('')
+        setNewPw('')
+        setConfirm('')
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occur");
+    }
   };
 
   return (
@@ -84,6 +148,9 @@ export default function SettingsPage() {
                 )}
               </button>
             </div>
+            {currentError && (
+              <p className="text-sm text-red-600">{currentError}</p>
+            )}
           </div>
 
           {/* Divider */}
@@ -115,11 +182,13 @@ export default function SettingsPage() {
                 value={newPw}
                 onChange={(e) => setNewPw(e.target.value)}
                 onFocus={() => setFocused("new")}
-                onBlur={() => setFocused(null)}
+                onBlur={() => {
+                  setFocused(null);
+                  // passwordMatch();
+                }}
                 placeholder="Enter new password"
                 className="w-full pl-11 pr-12 py-3.5 bg-transparent text-sm text-stone-700 placeholder-stone-400 focus:outline-none"
                 required
-
               />
               <button
                 onClick={() => setShowNew(!showNew)}
@@ -132,6 +201,7 @@ export default function SettingsPage() {
                 )}
               </button>
             </div>
+            {newPwError && <p className="text-sm text-red-600">{newPwError}</p>}
           </div>
 
           {/* Confirm Password */}
@@ -153,8 +223,14 @@ export default function SettingsPage() {
                 type={showConfirm ? "text" : "password"}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                onFocus={() => setFocused("confirm")}
-                onBlur={() => setFocused(null)}
+                onFocus={() => {
+                  setFocused("confirm");
+                  // passwordMatch();
+                }}
+                onBlur={() => {
+                  setFocused(null);
+                  // passwordMatch();
+                }}
                 placeholder="Re-enter new password"
                 className="w-full pl-11 pr-12 py-3.5 bg-transparent text-sm text-stone-700 placeholder-stone-400 focus:outline-none"
                 required
@@ -170,6 +246,10 @@ export default function SettingsPage() {
                 )}
               </button>
             </div>
+            {confirmError && (
+              <p className="text-sm text-red-600">{confirmError}</p>
+            )}
+            {/* <p><span className="text-sm text-red-600">{error}</span></p> */}
           </div>
         </div>
 
