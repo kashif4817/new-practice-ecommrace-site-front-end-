@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Eye,
   EyeOff,
@@ -10,9 +11,11 @@ import {
   Star,
   Shield,
   Zap,
+  // Link,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
 
 // Field message component
 function FieldMessage({ type, message }) {
@@ -371,12 +374,18 @@ export default function LoginPage({ onLoginSuccess }) {
                   <Lock className="w-3.5 h-3.5 text-stone-400" />
                   Password
                 </label>
-                <a
-                  href="#"
+                {/* <a
+                  href="/forgot-password"
                   className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2"
                 >
                   Forgot password?
-                </a>
+                </a> */}
+                <Link 
+                to='/forgot-password'
+                className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2"
+                >
+                  Forgot password?
+                </Link>
               </div>
               <div
                 className={`relative rounded-xl border-2 transition-all duration-300 bg-white ${
