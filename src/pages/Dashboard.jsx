@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import {
+  Crown,
   DollarSign,
   ShoppingCart,
   UserCheck,
@@ -270,8 +271,66 @@ const quickStats = [
 export default function DashboardPage() {
   const [chartPeriod, setChartPeriod] = useState("monthly");
   const { user, setUser } = useContext(UserContext);
+  console.log(user)
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <div className="relative w-full max-w-3xl overflow-hidden rounded-[32px] border border-stone-200/70 bg-white shadow-xl shadow-stone-200/50">
+          <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(251,191,36,0.18),_transparent_32%)]" />
+          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-400/10 blur-3xl" />
+
+          <div className="relative flex flex-col items-center px-6 py-14 text-center sm:px-10">
+            <div className="relative flex h-22 w-22 items-center justify-center">
+              <div className="absolute inset-0 rounded-full border-4 border-amber-400/20" />
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-amber-400 border-r-amber-300 animate-spin" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30">
+                <Crown className="h-7 w-7 text-stone-900" strokeWidth={2.5} />
+              </div>
+            </div>
+
+            <div className="mt-8 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-300">
+              <Sparkles className="h-4 w-4" />
+              LUXE Dashboard
+            </div>
+
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Preparing your store overview
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-stone-300 sm:text-base">
+              We are securely loading your account data, revenue insights, and
+              premium dashboard experience. This will only take a moment.
+            </p>
+
+            <div className="mt-8 grid w-full max-w-2xl gap-3 sm:grid-cols-3">
+              {[
+                "Syncing account profile",
+                "Loading store analytics",
+                "Finalizing dashboard widgets",
+              ].map((item, index) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-sm"
+                >
+                  <div className="mx-auto mb-3 h-2 w-16 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-500 animate-pulse"
+                      style={{
+                        width: `${70 + index * 10}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm font-medium text-stone-200">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="space-y-6 lg:space-y-8">

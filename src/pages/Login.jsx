@@ -154,7 +154,6 @@ export default function LoginPage({ onLoginSuccess }) {
       const result = await res.json();
       if (res.ok) {
         toast.success("Welcome back! 👋");
-        // onLoginSuccess?.();
         navigate("/dashboard");
       } else if (res.status === 500 || res.status === 401) {
         setFieldMsg("email", "error", " ");

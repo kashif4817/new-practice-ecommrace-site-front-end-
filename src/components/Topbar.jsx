@@ -121,8 +121,15 @@ export default function Topbar({ onMenuClick }) {
                     </p>
                   </div>
                   <div className="py-1">
-                    <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 cursor-pointer">
-                      <Eye className="w-3.5 h-3.5" /> View Profile
+                    <button
+                      onClick={() => {
+                        navigate("/dashboard/profile");
+                        setProfileOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      View Profile
                     </button>
                     <button
                       onClick={() => {

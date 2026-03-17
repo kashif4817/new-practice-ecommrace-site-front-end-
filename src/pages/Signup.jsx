@@ -134,12 +134,12 @@ function runValidator(field, value, extra = {}) {
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
-export default function SignUpPage({ onSignUpSuccess }) {
-  const [fullName, setFullName] = useState("MySecurePass456");
-  const [phone, setPhone] = useState("031716401347");
-  const [email, setEmail] = useState("0112luckyboy@gmail.com");
-  const [password, setPassword] = useState("MySecurePass456");
-  const [confirmPassword, setConfirmPassword] = useState("MySecurePass456");
+export default function SignUpPage() {
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(true);
@@ -251,38 +251,6 @@ export default function SignUpPage({ onSignUpSuccess }) {
       return;
     setIsSubmit(true);
     return;
-    setIsLoading(true);
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: fullName, phone, email, password }),
-      });
-      const result = await res.json();
-      if (res.ok) {
-        toast.success("Account created! Welcome to LUXE 🎉");
-        onSignUpSuccess?.();
-        navigate("/");
-      } else if (res.status === 409) {
-        const msg = result.message || "Email or phone already exists.";
-
-        toast.error(msg);
-      } else if (res.status === 400 && result.errors) {
-        Object.entries(result.errors).forEach(([field, msg]) => {
-          setFieldMsg(field === "name" ? "fullName" : field, "error", msg);
-        });
-        toast.error("Please fix the errors below.");
-      } else {
-        toast.error(
-          result.message || "Something went wrong. Please try again.",
-        );
-      }
-    } catch (error) {
-      console.error("Signup error:", error);
-      toast.error("Unable to connect to the server. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleSendOtp = async () => {
@@ -308,7 +276,7 @@ export default function SignUpPage({ onSignUpSuccess }) {
             password,
           }),
         );
-        console.log("session storage",sessionStorage)
+        console.log("session storage", sessionStorage);
         navigate("/verify-otp-signup");
         toast.success("An Otp has been send");
         return;

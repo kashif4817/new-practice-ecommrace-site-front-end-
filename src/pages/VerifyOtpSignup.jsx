@@ -83,7 +83,13 @@ export default function VerifyOtpPage() {
   };
 
   const signupData = JSON.parse(sessionStorage.getItem("signupData"));
+  console.log('signupData', signupData);
   const email = signupData.email;
+  const name = signupData.name;
+  const phone = signupData.phone;
+  const password = signupData.password;
+
+  console.log(email,name,phone,password);
 
   const handleVerify = async () => {
     const collect = otp.join("");
@@ -98,17 +104,32 @@ export default function VerifyOtpPage() {
       );
       const result = await res.json();
       if (res.ok) {
-        sessionStorage.removeItem("signupData");
-
-        
-        navigate("/");
-        toast.success("OTP verified & registration complete");
-        return;
+        try {
+          const res = await fetch("http://localhost:3000/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone, email, password }),
+          });
+          const result = await res.json();
+          if (res.ok) {
+            toast.success("Account created! Welcome to LUXE 🎉");
+            sessionStorage.removeItem("signupData");
+            navigate("/");
+            return;
+          } else {
+            toast.error(
+              result.message || "Something went wrong. Please try again.",
+            );
+          }
+        } catch (error) {
+          console.error("Signup error:", error);
+          toast.error("Unable to connect to the server. Please try again.");
+        }
       }
-
       setError(result.message);
     } catch (error) {
-      console.error(error);
+      console.error("Signup error:", error);
+      toast.error("Unable to connect to the server. Please try again.");
     }
   };
 
