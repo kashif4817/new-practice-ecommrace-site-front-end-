@@ -1,15 +1,64 @@
-import { useState } from "react";
-import { Crown, Mail, ArrowRight, ArrowLeft, Sparkles, Shield } from "lucide-react";
+import { useContext, useState } from "react";
+import {
+  Crown,
+  Mail,
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  Shield,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
 
 export default function ForgotPasswordPage({ onNext, onBack }) {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [emailError, setemailError] = useState("");
   const [focused, setFocused] = useState(false);
 
-  const handleSubmit = () => {
-    if (!email) return;
-    setSubmitted(true);
-    setTimeout(() => onNext?.(email), 800);
+  const navigate = useNavigate();
+
+
+  const validateEmail = () => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!regex.test(email.trim())) {
+      setemailError("Invalid email");
+      return false;
+    }
+
+    setemailError("");
+    return true;
+  };
+
+
+  const handleSubmit = async () => {
+    const isValid = validateEmail();
+    if (!isValid) return;
+    console.log("ready to call api");
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/auth/forget-password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // credentials: "include",
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      const result = await res.json();
+      console.log(result.data.email);
+      if (res.ok) {
+        sessionStorage.setItem("resetEmail", result.data.email);
+        navigate("/verify-otp-forgot");
+        toast.success("An email has been send");
+        return;
+      }
+      setemailError(result.message);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -35,8 +84,12 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
               <Crown className="w-6 h-6 text-stone-900" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-white tracking-widest">LUXE</h1>
-              <p className="text-amber-400/60 text-[8px] tracking-[0.3em] uppercase font-medium">Admin Panel</p>
+              <h1 className="text-lg font-bold text-white tracking-widest">
+                LUXE
+              </h1>
+              <p className="text-amber-400/60 text-[8px] tracking-[0.3em] uppercase font-medium">
+                Admin Panel
+              </p>
             </div>
           </div>
         </div>
@@ -47,10 +100,13 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
             <Shield className="w-8 h-8 text-amber-400" />
           </div>
           <h2 className="text-3xl font-bold text-white leading-tight mb-4">
-            Account<br />Recovery
+            Account
+            <br />
+            Recovery
           </h2>
           <p className="text-stone-400 text-sm leading-relaxed">
-            We'll send a secure verification code to your registered email address to help you regain access.
+            We'll send a secure verification code to your registered email
+            address to help you regain access.
           </p>
 
           {/* Steps */}
@@ -61,14 +117,18 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
               { step: "03", label: "Reset Password", active: false },
             ].map((s) => (
               <div key={s.step} className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
-                  s.active
-                    ? "bg-gradient-to-br from-amber-400 to-amber-600 text-stone-900"
-                    : "bg-white/5 text-stone-600"
-                }`}>
+                <div
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
+                    s.active
+                      ? "bg-gradient-to-br from-amber-400 to-amber-600 text-stone-900"
+                      : "bg-white/5 text-stone-600"
+                  }`}
+                >
                   {s.step}
                 </div>
-                <span className={`text-sm font-medium ${s.active ? "text-amber-400" : "text-stone-600"}`}>
+                <span
+                  className={`text-sm font-medium ${s.active ? "text-amber-400" : "text-stone-600"}`}
+                >
                   {s.label}
                 </span>
                 {s.active && (
@@ -81,7 +141,9 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
 
         {/* Bottom */}
         <div className="relative z-10 px-10 pb-10">
-          <p className="text-[10px] text-stone-600 tracking-widest uppercase">© 2024 LUXE Premium Store</p>
+          <p className="text-[10px] text-stone-600 tracking-widest uppercase">
+            © 2024 LUXE Premium Store
+          </p>
         </div>
       </div>
 
@@ -92,14 +154,16 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
           <div className="w-9 h-9 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20">
             <Crown className="w-5 h-5 text-stone-900" strokeWidth={2.5} />
           </div>
-          <span className="text-base font-bold text-stone-800 tracking-widest">LUXE</span>
+          <span className="text-base font-bold text-stone-800 tracking-widest">
+            LUXE
+          </span>
         </div>
 
         <div className="w-full max-w-md">
           {/* Back */}
           <button
-            onClick={onBack}
             className="flex items-center gap-2 text-sm text-stone-400 hover:text-stone-600 transition-colors mb-8 group cursor-pointer"
+            onClick={() => navigate("/")}
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             Back to login
@@ -109,9 +173,13 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <span className="text-xs tracking-wider uppercase text-amber-600 font-medium">Password Recovery</span>
+              <span className="text-xs tracking-wider uppercase text-amber-600 font-medium">
+                Password Recovery
+              </span>
             </div>
-            <h2 className="text-3xl font-bold text-stone-800 tracking-tight">Forgot password?</h2>
+            <h2 className="text-3xl font-bold text-stone-800 tracking-tight">
+              Forgot password?
+            </h2>
             <p className="text-stone-500 text-sm mt-2">
               No worries. Enter your email and we'll send you a reset code.
             </p>
@@ -124,12 +192,16 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
               <label className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">
                 Email Address
               </label>
-              <div className={`relative flex items-center rounded-xl border transition-all duration-200 bg-white ${
-                focused
-                  ? "border-amber-400 ring-2 ring-amber-100 shadow-sm"
-                  : "border-stone-200 hover:border-stone-300"
-              }`}>
-                <Mail className={`absolute left-4 w-4 h-4 transition-colors ${focused ? "text-amber-500" : "text-stone-400"}`} />
+              <div
+                className={`relative flex items-center rounded-xl border transition-all duration-200 bg-white ${
+                  focused
+                    ? "border-amber-400 ring-2 ring-amber-100 shadow-sm"
+                    : "border-stone-200 hover:border-stone-300"
+                }`}
+              >
+                <Mail
+                  className={`absolute left-4 w-4 h-4 transition-colors ${focused ? "text-amber-500" : "text-stone-400"}`}
+                />
                 <input
                   type="email"
                   value={email}
@@ -141,41 +213,25 @@ export default function ForgotPasswordPage({ onNext, onBack }) {
                   className="w-full pl-11 pr-4 py-3.5 bg-transparent text-sm text-stone-700 placeholder-stone-400 focus:outline-none rounded-xl"
                 />
               </div>
+              {emailError && (
+                <p className="text-sm text-red-600">{emailError}</p>
+              )}
             </div>
 
             {/* Submit Button */}
             <button
               onClick={handleSubmit}
-              disabled={!email || submitted}
+              disabled={!email}
               className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-md cursor-pointer ${
-                submitted
-                  ? "bg-emerald-500 text-white shadow-emerald-200"
-                  : email
+                email
                   ? "bg-gradient-to-r from-stone-800 to-stone-900 text-white hover:from-stone-900 hover:to-stone-950 shadow-stone-300 hover:shadow-lg hover:-translate-y-0.5"
-                  : "bg-stone-100 text-stone-400 cursor-not-allowed shadow-none"
+                  : "bg-stone 100 text-stone-400 cursor-not-allowed shadow-none"
               }`}
             >
-              {submitted ? (
-                <>
-                  <span>Code Sent!</span>
-                  <div className="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center">
-                    <span className="text-xs">✓</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <span>Send Reset Code</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
+              Send Reset Code
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-
-          {/* Info note */}
-          <p className="text-xs text-stone-400 text-center mt-6 leading-relaxed">
-            Didn't receive the email? Check your spam folder or{" "}
-            <button className="text-amber-600 hover:text-amber-700 font-medium cursor-pointer">try again</button>.
-          </p>
         </div>
       </div>
     </div>

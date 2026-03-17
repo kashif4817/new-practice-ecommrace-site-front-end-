@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Crown, Home, ShoppingBag, ShoppingCart, Users,
   BarChart3, CreditCard, Truck, Gift, Settings, LogOut, X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
 
 const navItems = [
   { icon: Home,        label: "Dashboard",  path: "/dashboard",  badge: null },
@@ -22,6 +23,8 @@ export default function Sidebar({ open, onClose }) {
   const navigate  = useNavigate();
   const location  = useLocation();
   const active    = (path) => location.pathname === path;
+
+  const {user}=useContext(UserContext);
 
   const handleLogout = async () => {
     await fetch("http://localhost:3000/api/auth/logout", { method: "POST", credentials: "include" });
@@ -100,8 +103,8 @@ export default function Sidebar({ open, onClose }) {
               AD
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-white truncate">Admin User</p>
-              <p className="text-[10px] text-stone-500 truncate">admin@luxe.com</p>
+              <p className="text-xs font-medium text-white truncate">{user?.full_name || "Admin user"}</p>
+              <p className="text-[10px] text-stone-500 truncate">{user?.email || "admin@luxe.com"}</p>
             </div>
             <button
               onClick={handleLogout}
