@@ -4,6 +4,11 @@ import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/Signup.jsx";
 
+import ResetPasswordPage from "./pages/resetPassword.jsx";
+import ForgotPasswordPage from "./pages/ForgotPassword.jsx";
+import VerifyOtpForgotPage from "./pages/VerifyOtpForgot.jsx";
+import VerifyOtpSignupPage from "./pages/VerifyOtpSignup.jsx";
+
 import DashboardPage from "./pages/Dashboard.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
@@ -17,12 +22,10 @@ import PaymentsPage from "./pages/Payments.jsx";
 import ShippingPage from "./pages/Shipping.jsx";
 import PromotionsPage from "./pages/Promotions.jsx";
 
-import NotFound from "./pages/NotFound.jsx";
+import DashboardLayout from './layouts/Dashboardlayout.jsx'
 
-import ResetPasswordPage from "./pages/resetPassword.jsx";
-import ForgotPasswordPage from "./pages/ForgotPassword.jsx";
-import VerifyOtpForgotPage from "./pages/VerifyOtpForgot.jsx";
-import VerifyOtpSignupPage from "./pages/VerifyOtpSignup.jsx";
+
+import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
   return (
