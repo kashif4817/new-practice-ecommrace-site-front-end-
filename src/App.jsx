@@ -3,8 +3,8 @@ import { Toaster } from "react-hot-toast";
 
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/Signup.jsx";
+
 import DashboardPage from "./pages/Dashboard.jsx";
-import NotFound from "./pages/NotFound.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import SettingsPage from "./pages/Settings.jsx";
@@ -17,6 +17,13 @@ import PaymentsPage from "./pages/Payments.jsx";
 import ShippingPage from "./pages/Shipping.jsx";
 import PromotionsPage from "./pages/Promotions.jsx";
 
+import NotFound from "./pages/NotFound.jsx";
+
+import ResetPasswordPage from "./pages/resetPassword.jsx";
+import ForgotPasswordPage from "./pages/ForgotPassword.jsx";
+import VerifyOtpForgotPage from "./pages/VerifyOtpForgot.jsx";
+import VerifyOtpSignupPage from "./pages/VerifyOtpSignup.jsx";
+
 export default function App() {
   return (
     <div>
@@ -27,7 +34,6 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/verify-otp-forgot" element={<VerifyOtpForgotPage />} />
         <Route path="/verify-otp-signup" element={<VerifyOtpSignupPage />} />
-
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
