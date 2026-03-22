@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/Signup.jsx";
-import ResetPasswordPage from "./pages/resetPassword.jsx";
+import ResetPasswordPage from "./pages/ResetPassword.jsx";
 import ForgotPasswordPage from "./pages/ForgotPassword.jsx";
 import VerifyOtpForgotPage from "./pages/VerifyOtpForgot.jsx";
 import VerifyOtpSignupPage from "./pages/VerifyOtpSignup.jsx";
