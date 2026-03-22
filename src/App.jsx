@@ -3,7 +3,6 @@ import { Toaster } from "react-hot-toast";
 
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/Signup.jsx";
-
 import ResetPasswordPage from "./pages/resetPassword.jsx";
 import ForgotPasswordPage from "./pages/ForgotPassword.jsx";
 import VerifyOtpForgotPage from "./pages/VerifyOtpForgot.jsx";
@@ -22,35 +21,40 @@ import PaymentsPage from "./pages/Payments.jsx";
 import ShippingPage from "./pages/Shipping.jsx";
 import PromotionsPage from "./pages/Promotions.jsx";
 
-import DashboardLayout from './layouts/Dashboardlayout.jsx'
-
-
+import DashboardLayout from "./layouts/Dashboardlayout.jsx";
+import ProtectedRoute from "./routes/ProtectedRoutes.jsx";
+import PublicRoute from "./routes/PublicRoutes.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/verify-otp-forgot" element={<VerifyOtpForgotPage />} />
-        <Route path="/verify-otp-signup" element={<VerifyOtpSignupPage />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-otp-forgot" element={<VerifyOtpForgotPage />} />
+          <Route path="/verify-otp-signup" element={<VerifyOtpSignupPage />} />
+        </Route>
+
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="products" element={<ProductsPage />} />
-          <Route path="orders" element={<OrdersPage />} />
-          <Route path="customers" element={<CustomersPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
-          <Route path="payments" element={<PaymentsPage />} />
-          <Route path="shipping" element={<ShippingPage />} />
-          <Route path="promotions" element={<PromotionsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="customers" element={<CustomersPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="payments" element={<PaymentsPage />} />
+            <Route path="shipping" element={<ShippingPage />} />
+            <Route path="promotions" element={<PromotionsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />

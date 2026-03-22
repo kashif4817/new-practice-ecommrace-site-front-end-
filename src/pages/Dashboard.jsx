@@ -271,7 +271,6 @@ const quickStats = [
 export default function DashboardPage() {
   const [chartPeriod, setChartPeriod] = useState("monthly");
   const { user, setUser } = useContext(UserContext);
-  console.log(user)
 
   if (!user) {
     return (
@@ -303,7 +302,7 @@ export default function DashboardPage() {
               premium dashboard experience. This will only take a moment.
             </p>
 
-            <div className="mt-8 grid w-full max-w-2xl gap-3 sm:grid-cols-3">
+            {/* <div className="mt-8 grid w-full max-w-2xl gap-3 sm:grid-cols-3">
               {[
                 "Syncing account profile",
                 "Loading store analytics",
@@ -324,7 +323,7 @@ export default function DashboardPage() {
                   <p className="text-sm font-medium text-stone-200">{item}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -346,16 +345,16 @@ export default function DashboardPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-stone-800">
             Dashboard
           </h1>
-          <p className="text-stone-500 text-sm mt-1">
+          <p className="mt-1 text-sm text-stone-500">
             Here's what's happening with your store today.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-600 text-sm font-medium hover:bg-stone-50 transition-colors cursor-pointer shadow-sm">
+          <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 shadow-sm transition-colors hover:bg-stone-50">
             <Filter className="w-4 h-4" />
             <span className="hidden sm:inline">Filters</span>
           </button>
-          <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-stone-800 to-stone-900 text-white text-sm font-medium hover:from-stone-900 hover:to-stone-950 transition-all shadow-md shadow-stone-300 cursor-pointer">
+          <button className="flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-stone-800 to-stone-900 px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-stone-300 transition-all hover:from-stone-900 hover:to-stone-950">
             <Package className="w-4 h-4" />
             <span>Add Product</span>
           </button>
@@ -367,7 +366,7 @@ export default function DashboardPage() {
         {statsData.map((stat) => (
           <div
             key={stat.label}
-            className="bg-white rounded-2xl border border-stone-200/60 p-5 lg:p-6 hover:shadow-lg hover:shadow-stone-200/50 transition-all duration-300"
+            className="rounded-2xl border border-stone-200/60 bg-white p-5 transition-all duration-300 hover:shadow-lg hover:shadow-stone-200/50 lg:p-6"
           >
             <div className="flex items-start justify-between mb-4">
               <div
@@ -390,10 +389,10 @@ export default function DashboardPage() {
                 {stat.change}
               </div>
             </div>
-            <p className="text-2xl lg:text-3xl font-bold text-stone-800 tracking-tight">
+            <p className="text-2xl font-bold tracking-tight text-stone-800 lg:text-3xl">
               {stat.value}
             </p>
-            <p className="text-sm text-stone-500 mt-1">{stat.label}</p>
+            <p className="mt-1 text-sm text-stone-500">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -401,7 +400,7 @@ export default function DashboardPage() {
       {/* Chart + Top Products */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6">
         {/* Revenue Chart */}
-        <div className="xl:col-span-2 bg-white rounded-2xl border border-stone-200/60 p-5 lg:p-6">
+        <div className="xl:col-span-2 rounded-2xl border border-stone-200/60 bg-white p-5 lg:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <div>
               <h3 className="text-lg font-bold text-stone-800">
@@ -411,7 +410,7 @@ export default function DashboardPage() {
                 Monthly revenue performance
               </p>
             </div>
-            <div className="flex items-center bg-stone-100 rounded-xl p-1">
+            <div className="flex items-center rounded-xl bg-stone-100 p-1">
               {["weekly", "monthly", "yearly"].map((p) => (
                 <button
                   key={p}
@@ -435,7 +434,7 @@ export default function DashboardPage() {
                 className="flex-1 flex flex-col items-center gap-2 group"
               >
                 <div className="w-full flex flex-col items-center">
-                  <span className="text-[10px] sm:text-xs text-stone-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity mb-1">
+                  <span className="mb-1 text-[10px] font-medium text-stone-500 opacity-0 transition-opacity group-hover:opacity-100 sm:text-xs">
                     ${(item.value * 482).toLocaleString()}
                   </span>
                   <div
@@ -450,14 +449,14 @@ export default function DashboardPage() {
                     }}
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs text-stone-400 font-medium">
+                <span className="text-[10px] font-medium text-stone-400 sm:text-xs">
                   {item.month}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-stone-100">
+          <div className="mt-6 grid grid-cols-3 gap-4 border-t border-stone-100 pt-6">
             <div>
               <p className="text-xs text-stone-500">This Month</p>
               <p className="text-lg font-bold text-stone-800">$48,265</p>
@@ -477,7 +476,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Top Products */}
-        <div className="bg-white rounded-2xl border border-stone-200/60 p-5 lg:p-6">
+        <div className="rounded-2xl border border-stone-200/60 bg-white p-5 lg:p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-lg font-bold text-stone-800">Top Products</h3>
@@ -491,22 +490,22 @@ export default function DashboardPage() {
             {topProducts.map((product, i) => (
               <div key={product.name} className="group">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-lg transition-transform group-hover:scale-110">
                     {product.image}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-stone-700 truncate">
+                    <p className="truncate text-sm font-semibold text-stone-700">
                       {product.name}
                     </p>
                     <p className="text-xs text-stone-400">
                       {product.category} • {product.sold} sold
                     </p>
                   </div>
-                  <p className="text-sm font-bold text-stone-800 shrink-0">
+                  <p className="shrink-0 text-sm font-bold text-stone-800">
                     {product.revenue}
                   </p>
                 </div>
-                <div className="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div className="h-1.5 overflow-hidden rounded-full bg-stone-100">
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ${i === 0 ? "bg-gradient-to-r from-amber-400 to-amber-500" : "bg-gradient-to-r from-stone-300 to-stone-400"}`}
                     style={{ width: `${product.progress}%` }}

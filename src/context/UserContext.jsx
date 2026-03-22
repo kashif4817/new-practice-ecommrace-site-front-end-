@@ -1,37 +1,31 @@
-// src/context/UserContext.js
-import { createContext, useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { createContext, useEffect, useState } from "react";
+import api from "../utils/axiosInstance";
 
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // ← start as true
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch("http://localhost:3000/api/auth/me", {
-                    method: "GET",
-                    credentials: "include",
-                });
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await api.get("/me");
+        if (res.data.success) {
+          setUser(res.data.data);
+        }
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
 
-                const result = await response.json();
-                if (response.ok) {
-                    setUser(result.data);
-                    console.log(result.data);
-                    toast.success("User fetch in react context");
-                }
-            } catch (error) {
-                console.error(error);
-                toast.error("an error occur in react context");
-            }
-        };
-        fetchUser();
-    }, []);
-
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider value={{ user, setUser, loading }}>
+      {children}
+    </UserContext.Provider>
+  );
 };

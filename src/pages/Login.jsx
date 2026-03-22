@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import api from "../utils/axiosInstance";
 
 // Field message component
 function FieldMessage({ type, message }) {
@@ -144,29 +144,24 @@ export default function LoginPage({ onLoginSuccess }) {
 
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password, rememberMe }),
-      });
+      const res = await api.post("/signin", { email, password, rememberMe });
 
-      const result = await res.json();
-      if (res.ok) {
+      if (res.data.success) {
         toast.success("Welcome back! 👋");
         navigate("/dashboard");
-      } else if (res.status === 500 || res.status === 401) {
-        setFieldMsg("email", "error", " ");
-        setFieldMsg("password", "error", "Invalid email or password.");
-        toast.error(result.message || "Invalid credentials.");
-      } else {
-        toast.error(
-          result.message || "Something went wrong. Please try again.",
-        );
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Unable to connect to the server. Please try again.");
+      const status = error.response?.status;
+      const message = error.response?.data?.message;
+
+      if (status === 401 || status === 404) {
+        toast.error(message); // "Invalid credentials"
+      } else if (status === 429) {
+        toast.error(message); // "Too many attempts"
+      } else {
+        toast.error("Server error. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -379,9 +374,9 @@ export default function LoginPage({ onLoginSuccess }) {
                 >
                   Forgot password?
                 </a> */}
-                <Link 
-                to='/forgot-password'
-                className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2"
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors hover:underline underline-offset-2"
                 >
                   Forgot password?
                 </Link>

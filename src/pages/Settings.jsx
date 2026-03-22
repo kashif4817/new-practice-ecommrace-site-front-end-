@@ -283,7 +283,7 @@ export default function SettingsPage() {
                     {passwordStrength.label}
                   </p>
                 </div>
-                <div className="w-32 rounded-full bg-stone-200 h-2.5 overflow-hidden">
+                <div className="h-2.5 w-32 overflow-hidden rounded-full bg-stone-200">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${passwordStrength.width} ${passwordStrength.tone}`}
                   />

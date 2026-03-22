@@ -84,7 +84,7 @@ export default function ComingSoonPage({
         <h1 className="text-2xl sm:text-3xl font-bold text-stone-800">
           {title}
         </h1>
-        <p className="text-stone-500 text-sm mt-1 max-w-2xl">{description}</p>
+        <p className="mt-1 max-w-2xl text-sm text-stone-500">{description}</p>
       </div>
 
       <section className="relative overflow-hidden rounded-[28px] border border-stone-200/70 bg-white shadow-sm">
@@ -113,10 +113,10 @@ export default function ComingSoonPage({
               </div>
 
               <div>
-                <h2 className="text-2xl sm:text-[2rem] font-bold text-stone-900 tracking-tight">
+                <h2 className="text-2xl sm:text-[2rem] font-bold tracking-tight text-stone-900">
                   This section is coming soon.
                 </h2>
-                <p className="text-stone-600 mt-3 max-w-2xl leading-7">
+                <p className="mt-3 max-w-2xl leading-7 text-stone-600">
                   We are crafting this {title.toLowerCase()} experience to match
                   the premium LUXE dashboard. For now, this area is reserved for
                   future tools, workflows, and polished store management
@@ -125,11 +125,11 @@ export default function ComingSoonPage({
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 rounded-xl bg-white/80 px-4 py-3 text-sm text-stone-600 border border-stone-200/80">
+                <div className="inline-flex items-center gap-2 rounded-xl border border-stone-200/80 bg-white/80 px-4 py-3 text-sm text-stone-600">
                   <Zap className={`w-4 h-4 ${theme.icon}`} />
                   Better controls are on the way
                 </div>
-                <div className="inline-flex items-center gap-2 rounded-xl bg-white/80 px-4 py-3 text-sm text-stone-600 border border-stone-200/80">
+                <div className="inline-flex items-center gap-2 rounded-xl border border-stone-200/80 bg-white/80 px-4 py-3 text-sm text-stone-600">
                   <ArrowRight className={`w-4 h-4 ${theme.icon}`} />
                   This page will be implemented in a future update
                 </div>
@@ -138,7 +138,7 @@ export default function ComingSoonPage({
 
             <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
               <div className="rounded-2xl border border-stone-200/70 bg-white/85 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-stone-400 font-semibold">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
                   Status
                 </p>
                 <p className="mt-3 text-lg font-bold text-stone-800">
@@ -151,7 +151,7 @@ export default function ComingSoonPage({
               </div>
 
               <div className="rounded-2xl border border-stone-200/70 bg-white/85 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-stone-400 font-semibold">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
                   Experience
                 </p>
                 <p className="mt-3 text-lg font-bold text-stone-800">
@@ -164,7 +164,7 @@ export default function ComingSoonPage({
               </div>
 
               <div className="rounded-2xl border border-stone-200/70 bg-white/85 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-stone-400 font-semibold">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
                   Next step
                 </p>
                 <p className="mt-3 text-lg font-bold text-stone-800">
